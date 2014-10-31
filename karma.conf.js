@@ -15,18 +15,20 @@ module.exports = function (config) {
         // testing framework to use (jasmine/mocha/qunit/...)
         frameworks: ['jasmine'],
 
+        preprocessors: {
+            'app/!(lib)/**/*.html': ['ng-html2js']
+        },
+
         // list of files / patterns to load in the browser
         files: [
-            'app/bower_components/jquery/dist/jquery.js',
-            'app/bower_components/angular/angular.js',
-            'app/bower_components/angular-mocks/angular-mocks.js',
-            'app/bower_components/angular-route/angular-route.js',
-            'app/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
-            '.tmp/js/app-templates.js',
-            'app/js/*/*.js',
-            'app/js/**/*.js',
-            'app/js/**/*.mock.js',
-            'app/js/**/*.spec.js'
+            'app/lib/jquery/dist/jquery.js',
+            'app/lib/angular/angular.js',
+            'app/lib/angular-mocks/angular-mocks.js',
+            'app/lib/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
+            'app/!(lib)/**/*.module.js',
+            'app/!(lib)/**/*.js',
+            'app/!(lib)/**/*.html',
+            'app/!(lib)/**/*.spec.js'
         ],
 
         // list of files / patterns to exclude
@@ -49,7 +51,7 @@ module.exports = function (config) {
 
         // Which plugins to enable
         plugins: [
-            'karma-phantomjs-launcher', 'karma-chrome-launcher', 'karma-junit-reporter', 'karma-jasmine', 'karma-coverage'
+            'karma-phantomjs-launcher', 'karma-chrome-launcher', 'karma-jasmine', 'karma-ng-html2js-preprocessor'
         ],
 
         // Continuous Integration mode
@@ -62,20 +64,9 @@ module.exports = function (config) {
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
         logLevel: config.LOG_INFO,
 
-        // coverage reporter generates the coverage
-        reporters: ['progress', 'coverage'],
-
-        preprocessors: {
-            'app/js/**/!(*spec).js': ['coverage']
-        },
-
-        // optionally, configure the reporter
-        coverageReporter: {
-            type: 'lcov',
-            dir: 'test/coverage'
-        },
-        junitReporter: {
-            outputFile: 'test/test-results.xml'
+        ngHtml2JsPreprocessor: {
+            moduleName: 'app.templates',
+            stripPrefix: 'app/'
         }
     });
 };
