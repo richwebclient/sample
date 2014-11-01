@@ -1,4 +1,10 @@
+/* 
+ * global:angular
+ */
 //this function will be called after page is initialized
+var restaurant = angular.module("restaurant",[]);
+
+/*
 jQuery(function () {
     jQuery("section").on("click", "figure", function () {
         var selected = jQuery(this).hasClass("selected");
@@ -7,13 +13,12 @@ jQuery(function () {
             jQuery(this).addClass("selected");
         }
     });
-
     var tableCtrl = tableController(tableService());
     tableCtrl.redraw();
-});
+});*/
 
 
-var tableService = function () {
+restaurant.factory('tableService', [ function  () {
     var tables = [
         {
             id: 1,
@@ -73,9 +78,9 @@ var tableService = function () {
             
         }
     };
-};
+}]);
 
-var tableController = function (tableService) {
+restaurant.controller('tableController', [ '$scope', 'tableService', function ($scope, tableService) {
     var addTableButtons = function (tableElem, id) {
         var menu = jQuery("<menu>");
         var occupyButton = jQuery("<button>OCCUPY</button>");
@@ -96,9 +101,9 @@ var tableController = function (tableService) {
         tableElem.attr('data-state', table.state);
     };
     
-    
+    $scope.tables = tableService.getTables();
 
-    return {
+  /*  return {
         makeTable: function (table) {
             var figTable = jQuery("<figure>");
 
@@ -123,6 +128,6 @@ var tableController = function (tableService) {
             tableService.getFromServer( function() { self.drawTables(); } );
         }
         
-    };
+    };*/
 
-};
+}]);;

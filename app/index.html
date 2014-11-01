@@ -9,10 +9,13 @@
     <link rel="stylesheet" href="css/restaurant.css"/>
     <link rel="stylesheet" href="css/app.css"/>
 </head>
-<body >
-    <section>
+<body data-ng-app="restaurant">
+    <section data-ng-controller="tableController">
         <h1>Welcome to Gustowna Cerata</h1>
-        
+        <figure data-ng-repeat="table in tables" data-state="{{table.state}}" class="table">
+            <figcaption>{{table.id}}</figcaption>
+            
+        </figure>
     </section>
 
 
