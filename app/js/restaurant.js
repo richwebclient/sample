@@ -7,6 +7,9 @@ jQuery(function () {
             jQuery(this).addClass("selected");
         }
     });
+    
+    var tableCtrl =  tableController(tableService());
+    tableCtrl.drawTables();
 });
 
 
@@ -47,3 +50,25 @@ var tableService = function () {
     };
 };
 
+var tableController = function (tableService) {
+    return {
+        makeTable: function (table) {
+            var figTable = jQuery("<figure>");
+            
+            var figTableCaption = jQuery("<figcaption>").text(table.id);
+            figTable = figTable.append(figTableCaption);
+            figTable.attr('data-state', table.state);
+            figTable.addClass("table");
+            return figTable;
+       },
+        drawTables: function () {
+            var root = jQuery("section"),
+            allTables = tableService.getTables();
+            
+            for ( var i =0; i < allTables.length; i++ ) {
+                root.append(this.makeTable(allTables[i]));
+            }
+        }
+    };
+
+};
