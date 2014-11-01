@@ -55,8 +55,22 @@ figure.table.selected > ul {
   color: black;
   list-style-type: none;
 }
+figure.table.selected > menu {
+  opacity: 1;
+}
 figure.table > ul {
   display: none;
   font-size: 0.6em;
+}
+figure.table > menu {
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  opacity: 0;
+}
+figure.table > menu > button {
+  font-size: 32px;
+  border-radius: 25%;
+  box-shadow: 8px 8px 8px 2px rgba(0, 0, 0, 0.5);
 }
 /*# sourceMappingURL=restaurant.css.map */

@@ -7,68 +7,106 @@ jQuery(function () {
             jQuery(this).addClass("selected");
         }
     });
-    
-    var tableCtrl =  tableController(tableService());
+
+    var tableCtrl = tableController(tableService());
     tableCtrl.drawTables();
 });
 
 
 var tableService = function () {
-    var tables, _getTables = function () {
-        return tables;
-    }, _initTables = function () {
-        tables = [
-            {
-                id: 1,
-                state: "FREE"
-            },
-            {
-                id: 2,
-                state: "OCCUPIED"
-            },
-            {
-                id: 3,
-                state: "OCCUPIED"
-            },
-            {
-                id: 4,
-                state: "FREE"
-            },
-            {
-                id: 5,
-                state: "FREE"
-            },
-            {
-                id: 6,
-                state: "OCCUPIED"
+    var tables = [
+        {
+            id: 1,
+            state: "FREE"
+        },
+        {
+            id: 2,
+            state: "OCCUPIED"
+        },
+        {
+            id: 3,
+            state: "OCCUPIED"
+        },
+        {
+            id: 4,
+            state: "FREE"
+        },
+        {
+            id: 5,
+            state: "FREE"
+        },
+        {
+            id: 6,
+            state: "OCCUPIED"
+        }
+    ], findTable = function (id) {
+        for (var index in tables) {
+            if (tables[index].id === id) {
+                return tables[index];
             }
-        ];
+        }
     };
-    _initTables();
+
+
     return {
-        getTables: _getTables
+        getTables: function () {
+            return tables;
+        },
+        occupy: function (id) {
+            var table = findTable(id);
+            table.state = "OCCUPIED";
+        }, 
+        free: function (id) {
+            var table = findTable(id);
+            table.state = "FREE";
+        }, findTable : findTable
     };
 };
 
 var tableController = function (tableService) {
+    var addTableButtons = function (tableElem, id) {
+        var menu = jQuery("<menu>");
+        var occupyButton = jQuery("<button>OCCUPY</button>");
+        occupyButton.on("click", function () {
+            tableService.occupy(id);
+            updateTable(tableElem,id);
+        });
+        var freeButton = jQuery("<button>FREE</button>");
+        freeButton.on("click", function () {
+            tableService.free(id);
+            updateTable(tableElem,id);
+        });
+        menu.append(occupyButton);
+        menu.append(freeButton);
+        tableElem.append(menu);
+    }, updateTable = function(tableElem, id) {
+        var table = tableService.findTable(id);
+        tableElem.attr('data-state', table.state);
+    };
+    
+    
+
     return {
         makeTable: function (table) {
             var figTable = jQuery("<figure>");
-            
+
             var figTableCaption = jQuery("<figcaption>").text(table.id);
             figTable = figTable.append(figTableCaption);
             figTable.attr('data-state', table.state);
             figTable.addClass("table");
+            figTable.attr("data-id", table.id);
+            addTableButtons(figTable, table.id);
             return figTable;
-       },
+        },
         drawTables: function () {
             var root = jQuery("section"),
-            allTables = tableService.getTables();
-            
-            for ( var i =0; i < allTables.length; i++ ) {
+                    allTables = tableService.getTables();
+
+            for (var i = 0; i < allTables.length; i++) {
                 root.append(this.makeTable(allTables[i]));
             }
         }
+        
     };
 
 };
