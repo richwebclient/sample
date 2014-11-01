@@ -55,16 +55,22 @@ var tableService = function () {
         occupy: function (id) {
             var table = findTable(id);
             table.state = "OCCUPIED";
+            this.markTable(table);
         }, 
         free: function (id) {
             var table = findTable(id);
             table.state = "FREE";
+            this.markTable(table);
         }, findTable : findTable,
         getFromServer : function( callback ) {
             jQuery.get('/services/rest/tablemanagement/table/', function(data) {
                 tables = data;
                 callback(tables);
             });
+        },
+        markTable : function (table, callback) {
+            jQuery.post( '/services/rest/tablemanagement/table/'+table.id+'/markTableAs'+table.state);
+            
         }
     };
 };
