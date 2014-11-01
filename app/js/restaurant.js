@@ -9,7 +9,7 @@ jQuery(function () {
     });
 
     var tableCtrl = tableController(tableService());
-    tableCtrl.drawTables();
+    tableCtrl.redraw();
 });
 
 
@@ -59,7 +59,13 @@ var tableService = function () {
         free: function (id) {
             var table = findTable(id);
             table.state = "FREE";
-        }, findTable : findTable
+        }, findTable : findTable,
+        getFromServer : function( callback ) {
+            jQuery.get('/services/rest/tablemanagement/table/', function(data) {
+                tables = data;
+                callback(tables);
+            });
+        }
     };
 };
 
@@ -105,6 +111,10 @@ var tableController = function (tableService) {
             for (var i = 0; i < allTables.length; i++) {
                 root.append(this.makeTable(allTables[i]));
             }
+        },
+        redraw: function () {
+            var self = this;
+            tableService.getFromServer( function() { self.drawTables(); } );
         }
         
     };
