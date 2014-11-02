@@ -74,10 +74,31 @@ figure.table {
         width: auto;
         height: auto;
 
-        > ul {
-            display: block;
-            color: black;
-            list-style-type: none;
+        > div {
+            display: flex;
+            flex-direction: row;
+            > ul {
+                display: block;
+                color: black;
+                list-style-type: none;
+                width: 25%;
+                margin: 5%;
+                &:first-of-type::before {
+                    content: "Menu";
+                }
+                &:last-of-type::before {
+                    content: "Zamówienia";
+                }
+                > li {
+                    display: block;
+                    box-shadow: 2px 2px gray;
+                    &:hover {
+                        box-shadow: 2px 2px 8px 8px gray;
+                    }
+                }
+                color: black;
+                background: white;
+            }
         }
         > menu {
             opacity: 1;
@@ -87,7 +108,7 @@ figure.table {
         }
     }
 
-    > ul {
+    > div > ul {
         display: none;
         font-size: 0.6em;
     }
@@ -96,7 +117,7 @@ figure.table {
         right: 1em;
         bottom: 1em;
         opacity: 0;
-        
+
         > button {
             font-size: 32px;
             border-radius: 25%;

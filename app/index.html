@@ -15,12 +15,16 @@
         <figure data-ng-repeat="table in tablesData.tables"
                 data-state="{{table.state}}" 
                 class="table {{isSelected(table)}}" 
-               >
+                >
             <figcaption  data-ng-click="select(table)">{{table.id}}</figcaption>
-            <ul>
-                <li data-ng-repeat="offerPosition  in tablesData.offer">{{offerPosition.description}} </li>
-            </ul>
-            
+            <div>
+                <ul>
+                    <li data-ng-repeat="offerPosition  in tablesData.offer" data-ng-click="addPosition(offerPosition, table)">{{offerPosition.description}} </li>
+                </ul>
+                <ul>
+                    <li data-ng-repeat="pos in getOrder(table).positions">{{pos.offerName}}</li>
+                </ul>
+            </div>
             <menu>
                 <button data-ng-click="occupy(table)">OCCUPY</button>
                 <button data-ng-click="free(table)">FREE</button>

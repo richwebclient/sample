@@ -50,10 +50,30 @@ figure.table.selected {
   width: auto;
   height: auto;
 }
-figure.table.selected > ul {
+figure.table.selected > div {
+  display: flex;
+  flex-direction: row;
+}
+figure.table.selected > div > ul {
   display: block;
-  color: black;
   list-style-type: none;
+  width: 25%;
+  margin: 5%;
+  color: black;
+  background: white;
+}
+figure.table.selected > div > ul:first-of-type::before {
+  content: "Menu";
+}
+figure.table.selected > div > ul:last-of-type::before {
+  content: "Zamówienia";
+}
+figure.table.selected > div > ul > li {
+  display: block;
+  box-shadow: 2px 2px gray;
+}
+figure.table.selected > div > ul > li:hover {
+  box-shadow: 2px 2px 8px 8px gray;
 }
 figure.table.selected > menu {
   opacity: 1;
@@ -61,7 +81,7 @@ figure.table.selected > menu {
 figure.table.selected > button.close {
   display: block;
 }
-figure.table > ul {
+figure.table > div > ul {
   display: none;
   font-size: 0.6em;
 }

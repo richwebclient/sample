@@ -2,11 +2,8 @@
  * global:angular
  */
 var restaurant = angular.module("restaurant", []);
-
-
-
-restaurant.factory('tableService', ['$http',function ($http) {
-        var tablesData = { tables: [], offer: [] } 
+restaurant.factory('tableService', ['$http', function ($http) {
+        var tablesData = {tables: [], offer: [], orders: []}
         , findTable = function (id) {
             for (var index in tablesData.tables) {
                 if (tablesData.tables[index].id === id) {
@@ -14,12 +11,31 @@ restaurant.factory('tableService', ['$http',function ($http) {
                 }
             }
         };
-
-
         return {
             getTables: function () {
                 this.getFromServer();
                 return tablesData;
+            },
+            getOrder: function (id) {
+                if (!tablesData.orders[id]) {
+                    tablesData.orders[id] = {
+                        order: {
+                            tableId: id,
+                            state: "OPEN"
+                        },
+                        positions: [{
+                                comment: "",
+                                offerId: null,
+                                offerName: "Wątróbka",
+                                price: "6.99",
+                                revision: null,
+                                state: "ORDERED"
+                            }
+                        ]
+
+                    };
+                }
+                return tablesData.orders[id];
             },
             occupy: function (id) {
                 var table = findTable(id);
@@ -32,24 +48,34 @@ restaurant.factory('tableService', ['$http',function ($http) {
                 this.markTable(table);
             }, findTable: findTable,
             getFromServer: function () {
-                if (tablesData.tables.length <= 0)  {
+                if (tablesData.tables.length <= 0) {
                     $http.get('/services/rest/tablemanagement/table/')
-                            .success(function(data) {
+                            .success(function (data) {
                                 tablesData.tables = data;
                             });
                     $http.get('/services/rest/offermanagement/offer')
-                            .success(function(data) {
+                            .success(function (data) {
                                 tablesData.offer = data;
                             });
                 }
-                
+
             },
             markTable: function (table) {
                 $http.post('/services/rest/tablemanagement/table/' + table.id + '/markTableAs' + table.state);
+            },
+            addPosition: function (position, id) {
+                var order = this.getOrder(id);
+                order.positions.push({
+                                comment: "",
+                                offerId: null,
+                                offerName: position.description,
+                                price: position.currentPrice,
+                                revision: null,
+                                state: "ORDERED"
+                            });
             }
         };
     }]);
-
 restaurant.controller('tableController', ['$scope', 'tableService', function ($scope, tableService) {
         $scope.selected = null;
         $scope.tablesData = tableService.getTables();
@@ -68,6 +94,13 @@ restaurant.controller('tableController', ['$scope', 'tableService', function ($s
         $scope.close = function (table) {
             $scope.selected = null;
             return false;
+        };
+        $scope.getOrder = function (table) {
+            return tableService.getOrder(table.id);
+        };
+        
+        $scope.addPosition = function(pos,table) {
+            tableService.addPosition(pos,table.id);
         };
     }]);
 ;
