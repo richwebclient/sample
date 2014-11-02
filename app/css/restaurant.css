@@ -58,6 +58,9 @@ figure.table.selected > ul {
 figure.table.selected > menu {
   opacity: 1;
 }
+figure.table.selected > button.close {
+  display: block;
+}
 figure.table > ul {
   display: none;
   font-size: 0.6em;
@@ -72,5 +75,14 @@ figure.table > menu > button {
   font-size: 32px;
   border-radius: 25%;
   box-shadow: 8px 8px 8px 2px rgba(0, 0, 0, 0.5);
+}
+figure.table > button.close {
+  position: absolute;
+  right: 0.1em;
+  top: 0.1em;
+  background: red;
+  color: white;
+  border-radius: 100%;
+  display: none;
 }
 /*# sourceMappingURL=restaurant.css.map */

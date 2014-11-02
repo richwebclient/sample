@@ -82,6 +82,9 @@ figure.table {
         > menu {
             opacity: 1;
         }
+        > button.close {
+            display: block;
+        }
     }
 
     > ul {
@@ -99,6 +102,15 @@ figure.table {
             border-radius: 25%;
             .shadow();
         }
+    }
+    > button.close {
+        position: absolute;
+        right: 0.1em;
+        top:0.1em;
+        background: red;
+        color: white;
+        border-radius: 100%;
+        display: none;
     }
 }
 

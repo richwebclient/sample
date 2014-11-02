@@ -12,9 +12,20 @@
 <body data-ng-app="restaurant">
     <section data-ng-controller="tableController">
         <h1>Welcome to Gustowna Cerata</h1>
-        <figure data-ng-repeat="table in tables" data-state="{{table.state}}" class="table">
-            <figcaption>{{table.id}}</figcaption>
+        <figure data-ng-repeat="table in tablesData.tables"
+                data-state="{{table.state}}" 
+                class="table {{isSelected(table)}}" 
+               >
+            <figcaption  data-ng-click="select(table)">{{table.id}}</figcaption>
+            <ul>
+                <li data-ng-repeat="offerPosition  in tablesData.offer">{{offerPosition.description}} </li>
+            </ul>
             
+            <menu>
+                <button data-ng-click="occupy(table)">OCCUPY</button>
+                <button data-ng-click="free(table)">FREE</button>
+            </menu>
+            <button class="close" data-ng-click="close(table)">X</button>    
         </figure>
     </section>
 
