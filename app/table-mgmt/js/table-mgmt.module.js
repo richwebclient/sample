@@ -7,7 +7,7 @@ angular.module('table-mgmt', ['ngRoute']).config(function ($routeProvider) {
                 return tables.getTables();
             }
         }
-    }).when('/table-view/:tableId', {
+    }).when('/table-details/:tableId', {
         templateUrl: '/table-mgmt/html/table-details.html',
         controller: 'TableDetailsCntl',
         resolve: {
