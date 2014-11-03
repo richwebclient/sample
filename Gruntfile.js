@@ -110,4 +110,7 @@ module.exports = function (grunt) {
     grunt.registerTask('serve', [
         'less', 'wiredep', 'connect:develop', 'watch'
     ]);
+    grunt.registerTask('serve-minimal', [
+        'connect:develop', 'watch'
+    ]);
 };
