@@ -11,28 +11,6 @@ module.exports = function (grunt) {
             options: {
                 port: 9000,
                 hostname: 'localhost'
-            }, server: {
-                proxies: [
-                    {
-                        context: '/services',
-                        host: 'localhost',
-                        port: 8081,
-                        https: false,
-                        changeOrigin: true,
-                        rewrite: {
-                            '^/': '/oasp4j-example-application/'
-                        }
-                    },
-                    {
-                        context: '/',
-                        host: 'localhost',
-                        port: 9000,
-                        https: false,
-                        changeOrigin: true
-                        
-                    }
-
-                ]
             },
             develop: {
                 options: {
@@ -51,13 +29,10 @@ module.exports = function (grunt) {
                             res.setHeader('Cache-Control', 'no-store');
                             next();
                         }, middlewares = [cacheClear], directory = (options.directory || options.base[options.base.length - 1]);
-                      
                         // Serve static files.
                         options.base.forEach(function (base) {
                             middlewares.push(connect.static(base));
                         });
-                          // Setup the proxy
-                        middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
                         // Make directory browse-able.
                         middlewares.push(connect.directory(directory));
 
@@ -73,9 +48,9 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            options: {livereload: true},
+            options: { livereload: true },
             all: {
-                files: ['app/**', '!/app/lib/**']
+                files: ['app/**','!/app/bower_components/**']
             }
         },
         karma: {
@@ -110,6 +85,6 @@ module.exports = function (grunt) {
         'karma:unit'
     ]);
     grunt.registerTask('serve', [
-        'wiredep', 'configureProxies:server', 'connect:develop', 'watch'
+        'wiredep', 'connect:develop', 'watch'
     ]);
 };
