@@ -11,28 +11,6 @@ module.exports = function (grunt) {
             options: {
                 port: 9000,
                 hostname: 'localhost'
-            }, server: {
-                proxies: [
-                    {
-                        context: '/services',
-                        host: 'localhost',
-                        port: 8081,
-                        https: false,
-                        changeOrigin: true,
-                        rewrite: {
-                            '^/': '/oasp4j-example-application/'
-                        }
-                    },
-                    {
-                        context: '/',
-                        host: 'localhost',
-                        port: 9000,
-                        https: false,
-                        changeOrigin: true
-                        
-                    }
-
-                ]
             },
             develop: {
                 options: {
@@ -40,7 +18,7 @@ module.exports = function (grunt) {
                     open: {
                         target: 'http://localhost:9000/'
                     },
-                    base: ['app'],
+                    base: ['.tmp', 'app'],
                     middleware: function (connect, options) {
                         if (!Array.isArray(options.base)) {
                             options.base = [options.base];
@@ -51,18 +29,25 @@ module.exports = function (grunt) {
                             res.setHeader('Cache-Control', 'no-store');
                             next();
                         }, middlewares = [cacheClear], directory = (options.directory || options.base[options.base.length - 1]);
-                      
                         // Serve static files.
                         options.base.forEach(function (base) {
                             middlewares.push(connect.static(base));
                         });
-                          // Setup the proxy
-                        middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
                         // Make directory browse-able.
                         middlewares.push(connect.directory(directory));
 
                         return middlewares;
                     }
+                }
+            }
+        },
+        less: {
+            all: {
+                options: {
+                    compress: false
+                },
+                files: {
+                    '.tmp/main/css/main.css': 'app/main/css/main.less'
                 }
             }
         },
@@ -73,9 +58,13 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            options: {livereload: true},
+            options: { livereload: true },
+            less: {
+                files: ['app/main/**/*.less'],
+                tasks: ['less']
+            },
             all: {
-                files: ['app/**', '!/app/lib/**']
+                files: ['app/**', '!/app/bower_components/**']
             }
         },
         karma: {
@@ -94,6 +83,15 @@ module.exports = function (grunt) {
                 configFile: 'karma.conf.js',
                 singleRun: true
             }
+        },
+        coveralls: {
+            options: {
+                debug: true,
+                coverage_dir: 'coverage/',
+                dryRun: false,
+                force: true,
+                recursive: true
+            }
         }
     });
 
@@ -104,12 +102,12 @@ module.exports = function (grunt) {
         'karma:unit_chrome'
     ]);
     grunt.registerTask('test:ci', [
-        'karma:ci'
+        'karma:ci', 'coveralls'
     ]);
     grunt.registerTask('default', [
         'karma:unit'
     ]);
     grunt.registerTask('serve', [
-        'wiredep', 'configureProxies:server', 'connect:develop', 'watch'
+        'less', 'wiredep', 'connect:develop', 'watch'
     ]);
 };

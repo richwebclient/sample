@@ -16,19 +16,18 @@ module.exports = function (config) {
         frameworks: ['jasmine'],
 
         preprocessors: {
-            'app/!(lib)/**/*.html': ['ng-html2js']
+            'app/!(bower_components)/**/*.html': ['ng-html2js']
         },
 
         // list of files / patterns to load in the browser
         files: [
-            'app/lib/jquery/dist/jquery.js',
-            'app/lib/angular/angular.js',
-            'app/lib/angular-mocks/angular-mocks.js',
-            'app/lib/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
-            'app/!(lib)/**/*.module.js',
-            'app/!(lib)/**/*.js',
-            'app/!(lib)/**/*.html',
-            'app/!(lib)/**/*.spec.js'
+            'app/bower_components/jquery/dist/jquery.js',
+            'app/bower_components/angular/angular.js',
+            'app/bower_components/angular-mocks/angular-mocks.js',
+            'app/!(bower_components)/**/*.module.js',
+            'app/!(bower_components)/**/*.js',
+            'app/!(bower_components)/**/*.html',
+            'app/!(bower_components)/**/*.spec.js'
         ],
 
         // list of files / patterns to exclude
