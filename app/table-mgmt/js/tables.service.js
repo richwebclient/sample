@@ -1,5 +1,5 @@
 angular.module('table-mgmt')
-    .factory('tables', function () {
+    .factory('tables', function ($http) {
         return {
             getTableDetails: function (tableId) {
                 return {
@@ -8,17 +8,9 @@ angular.module('table-mgmt')
                 };
             },
             getTables: function () {
-                return [
-                    {
-                        id: 1
-                    },
-                    {
-                        id: 2
-                    },
-                    {
-                        id: 3
-                    }
-                ];
+                return $http.get('http://demo2026062.mockable.io/tables').then(function (response) {
+                    return response.data;
+                });
             }
         }
     });
