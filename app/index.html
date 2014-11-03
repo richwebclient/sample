@@ -18,16 +18,17 @@
                 >
             <figcaption  data-ng-click="select(table)">{{table.id}}</figcaption>
             <div>
-                <ul>
+                <ul data-ng-show="isOccupied(table)">
                     <li data-ng-repeat="offerPosition  in tablesData.offer" data-ng-click="addPosition(offerPosition, table)">{{offerPosition.description}} </li>
                 </ul>
-                <ul>
+                <ul data-ng-show="isOccupied(table)">
                     <li data-ng-repeat="pos in getOrder(table).positions">{{pos.offerName}}</li>
                 </ul>
             </div>
             <menu>
-                <button data-ng-click="occupy(table)">OCCUPY</button>
-                <button data-ng-click="free(table)">FREE</button>
+                <button data-ng-show="!isOccupied(table)" data-ng-click="occupy(table)">OCCUPY</button>
+                <button data-ng-show="isOccupied(table)" data-ng-click="free(table)">FREE</button>
+                <button data-ng-show="isOccupied(table)" data-ng-click="submit(table)">SUBMIT</button>
             </menu>
             <button class="close" data-ng-click="close(table)">X</button>    
         </figure>

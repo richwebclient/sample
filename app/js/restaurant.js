@@ -16,6 +16,9 @@ restaurant.factory('tableService', ['$http', function ($http) {
                 this.getFromServer();
                 return tablesData;
             },
+            putOrder : function(id) {
+                $http.post('services/rest/salesmanagement/order',this.getOrder(id));
+            },
             getOrder: function (id) {
                 if (!tablesData.orders[id]) {
                     tablesData.orders[id] = {
@@ -23,14 +26,7 @@ restaurant.factory('tableService', ['$http', function ($http) {
                             tableId: id,
                             state: "OPEN"
                         },
-                        positions: [{
-                                comment: "",
-                                offerId: null,
-                                offerName: "Wątróbka",
-                                price: "6.99",
-                                revision: null,
-                                state: "ORDERED"
-                            }
+                        positions: [
                         ]
 
                     };
@@ -56,6 +52,14 @@ restaurant.factory('tableService', ['$http', function ($http) {
                     $http.get('/services/rest/offermanagement/offer')
                             .success(function (data) {
                                 tablesData.offer = data;
+                            });
+                    $http.get('/services/rest/salesmanagement/order')
+                            .success(function (data) {
+                                for (index in data) {
+                                    var ord = data[index];
+                                    tablesData.orders[ord.order.tableId] = ord;
+                                }
+                                
                             });
                 }
 
@@ -91,12 +95,18 @@ restaurant.controller('tableController', ['$scope', 'tableService', function ($s
         $scope.free = function (table) {
             tableService.free(table.id);
         };
+        $scope.isOccupied = function (table) {
+            return table.state === "OCCUPIED";
+        };
         $scope.close = function (table) {
             $scope.selected = null;
             return false;
         };
         $scope.getOrder = function (table) {
             return tableService.getOrder(table.id);
+        };
+        $scope.submit = function (table) {
+            return tableService.putOrder(table.id);
         };
         
         $scope.addPosition = function(pos,table) {
