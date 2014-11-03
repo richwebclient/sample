@@ -8,8 +8,8 @@ angular.module('table-mgmt', ['ngRoute']).config(function ($routeProvider) {
             }
         }
     }).when('/table-view/:tableId', {
-        templateUrl: '/table-mgmt/html/table-view.html',
-        controller: 'TableViewCntl',
+        templateUrl: '/table-mgmt/html/table-details.html',
+        controller: 'TableDetailsCntl',
         resolve: {
             table: function ($route, tables) {
                 return tables.getTableDetails($route.current.params.tableId);
