@@ -12,6 +12,17 @@ module.exports = function (grunt) {
                 port: 9000,
                 hostname: 'localhost'
             },
+            server: {
+                proxies: [
+                    {
+                        context: '/services',
+                        host: 'localhost',
+                        port: 8888,
+                        https: false,
+                        changeOrigin: true
+                    }
+                ]
+            },
             develop: {
                 options: {
                     port: 9000,
@@ -33,6 +44,8 @@ module.exports = function (grunt) {
                         options.base.forEach(function (base) {
                             middlewares.push(connect.static(base));
                         });
+                        // Setup the proxy
+                        middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
                         // Make directory browse-able.
                         middlewares.push(connect.directory(directory));
 
@@ -108,6 +121,6 @@ module.exports = function (grunt) {
         'karma:unit'
     ]);
     grunt.registerTask('serve', [
-        'less', 'wiredep', 'connect:develop', 'watch'
+        'less', 'wiredep', 'configureProxies:server', 'connect:develop', 'watch'
     ]);
 };
