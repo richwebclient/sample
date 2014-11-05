@@ -1,4 +1,4 @@
-angular.module('table-mgmt', ['ngRoute']).config(function ($routeProvider) {
+angular.module('table-mgmt', ['ngRoute', 'ngResource']).config(function ($routeProvider) {
     $routeProvider.when('/tables', {
         templateUrl: '/table-mgmt/html/tables.html',
         controller: 'TablesCntl',
@@ -11,8 +11,8 @@ angular.module('table-mgmt', ['ngRoute']).config(function ($routeProvider) {
         templateUrl: '/table-mgmt/html/table-details.html',
         controller: 'TableDetailsCntl',
         resolve: {
-            table: function ($route, tables) {
-                return tables.getTableDetails($route.current.params.tableId);
+            table: function ($route, Table) {
+                return Table.get({id: $route.current.params.tableId}).$promise;
             }
         }
     }).otherwise({
