@@ -17,9 +17,12 @@ module.exports = function (grunt) {
                     {
                         context: '/services',
                         host: 'localhost',
-                        port: 8888,
+                        port: 8081,
                         https: false,
-                        changeOrigin: true
+                        changeOrigin: true,
+                          rewrite: {
+                            '^/': '/oasp4j-example-application/'
+                        }
                     }
                 ]
             },
